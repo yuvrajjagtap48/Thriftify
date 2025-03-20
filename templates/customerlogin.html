@@ -7,22 +7,67 @@
     .errorlist {
         color: red;
     }
+
+    .login-container {
+        margin-top: 50px;
+        padding: 30px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-container h3 {
+        font-size: 1.75rem;
+        color: #343a40;
+    }
+
+    .login-container hr {
+        border-color: #007bff;
+    }
+
+    .login-container form {
+        margin-top: 20px;
+    }
+
+    .login-container .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .login-container .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .login-container p {
+        margin-top: 20px;
+        color: #6c757d;
+    }
+
+    .login-container a {
+        color: #007bff;
+    }
+
+    .login-container a:hover {
+        text-decoration: underline;
+    }
 </style>
 <div class="container">
     <div class="row">
-        <div class="col-md-6 mx-auto">
+        <div class="col-md-6 mx-auto login-container">
             <h3>Customer Login Form</h3>
             <hr>
             <form action="" method="POST">
                 {% csrf_token %}
                 {{form.as_p}}
-                <button class="btn btn-primary">Login as a Customer</button>
+                <button class="btn btn-primary btn-block">Login as a Customer</button>
                 {% if error %}
                 <li style="color: red;">{{error}}</li>
                 {% endif %}
             </form>
-            <p>Forgot Password?<a href="{% url 'Thrift:passworforgot' %}">Reset now.</a></p>
-            <p> or dont have account? <a href="{% url 'Thrift:customerregistration' %}{% if request.GET.next %}?next={{request.GET.next}}{% endif %}">Register here</a></p>
+            <p>Forgot Password? <a href="{% url 'Thrift:passworforgot' %}">Reset now.</a></p>
+            <p>or don't have an account? <a href="{% url 'Thrift:customerregistration' %}{% if request.GET.next %}?next={{request.GET.next}}{% endif %}">Register here</a></p>
         </div>
     </div>
 </div>

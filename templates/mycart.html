@@ -1,13 +1,103 @@
 {% extends 'base.html' %}
 
-{% block title %} My cart{% endblock %}
+{% block title %} My Cart {% endblock %}
 
 {% block content %}
+<style>
+    .container {
+        margin-top: 50px;
+    }
+
+    .table {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .table thead th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .table tbody tr:nth-child(odd) {
+        background-color: #f8f9fa;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e9ecef;
+    }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #212529;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+
+    h4 {
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .total-row {
+        font-weight: 700;
+        background-color: #343a40;
+        color: white;
+    }
+
+    .empty-cart, .checkout-btn {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 20px;
+    }
+
+    .empty-cart a, .checkout-btn a {
+        text-decoration: none;
+        color: white;
+    }
+
+    .empty-cart a:hover, .checkout-btn a:hover {
+        text-decoration: underline;
+    }
+</style>
+
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
-            <h4>Items in my cart</h4><hr>
-            <table class="table">
+        <div class="col-md-8 mx-auto">
+            <h4>Items in my cart</h4>
+            <hr>
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>SN</th>
@@ -21,32 +111,32 @@
                 <tbody>
                     {% for cp in cart.cartproduct_set.all %}
                     <tr>
-                        <td>{{forloop.counter}}</td>
-                        <td>{{cp.product.title}}</td>
-                        <td>{{cp.rate}}</td>
-                        <td>{{cp.quantity}}</td>
-                        <td>{{cp.subtotal}}</td>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ cp.product.title }}</td>
+                        <td>Rs. {{ cp.rate }}</td>
+                        <td>{{ cp.quantity }}</td>
+                        <td>Rs. {{ cp.subtotal }}</td>
                         <td>
-                            <a href="{% url 'Thrift:managecart' cp.id %}?action=inc" class="btn btn-primary"> + </a>
-                            <a href="{% url 'Thrift:managecart' cp.id %}?action=dcr" class="btn btn-warning"> - </a>
-                            <a href="{% url 'Thrift:managecart' cp.id %}?action=rmv" class="btn btn-danger"> x </a>
+                            <a href="{% url 'Thrift:managecart' cp.id %}?action=inc" class="btn btn-primary btn-sm"> + </a>
+                            <a href="{% url 'Thrift:managecart' cp.id %}?action=dcr" class="btn btn-warning btn-sm"> - </a>
+                            <a href="{% url 'Thrift:managecart' cp.id %}?action=rmv" class="btn btn-danger btn-sm"> x </a>
                         </td>
                     </tr>
                     {% endfor %}
-                    <tr>
+                    <tr class="total-row">
                         <th colspan="4" class="text-right">Total</th>
-                        <th>Rs. {{cart.total}}</th>
-                        {% if cart.cartproduct_set.all %}
-                        <th><a href="{% url 'Thrift:emptycart' %}">Empty Cart</a></th>
-                        {% endif %}
+                        <th colspan="2">Rs. {{ cart.total }}</th>
                     </tr>
-                    {% if cart.cartproduct_set.all %}
-                    <tr>
-                        <th><a class="btn btn-info" href="{% url 'Thrift:checkout' %}"> Checkout </a></th>
-                    </tr>
-                    {% endif %}
                 </tbody>
             </table>
+            {% if cart.cartproduct_set.all %}
+            <div class="empty-cart">
+                <a href="{% url 'Thrift:emptycart' %}" class="btn btn-danger">Empty Cart</a>
+            </div>
+            <div class="checkout-btn">
+                <a href="{% url 'Thrift:checkout' %}" class="btn btn-info">Checkout</a>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

@@ -18,7 +18,7 @@ class EcomMixin(object):
         cart_id = request.session.get("cart_id")
         if cart_id:
             cart_obj = Cart.objects.get(id=cart_id)
-            if request.user.is_authenticated and request.user.customer:
+            if request.user.is_authenticated and hasattr(request.user, 'customer'):
                 cart_obj.customer = request.user.customer
                 cart_obj.save()
         return super().dispatch(request, *args, **kwargs)
@@ -36,6 +36,12 @@ class HomeView(EcomMixin, TemplateView):
         print(page_number)
         product_list = paginator.get_page(page_number)
         context['product_list'] = product_list
+        if self.request.user.is_authenticated:
+            try:
+                customer = self.request.user.customer
+                context['customer'] = customer
+            except Customer.DoesNotExist:
+                context['customer'] = None
         return context
 
 
